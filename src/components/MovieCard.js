@@ -1,6 +1,6 @@
 //this component contain movie cards to display 
 import React from 'react';
-import { addFAVOURITE, removeFromFavourites, REMOVE_FROM_FAVOURITES } from '../actions';
+import { addFAVOURITE, removeFromFavourites } from '../actions';
 
 class MovieCard extends React.Component{
    //make an event listener to handle favourites

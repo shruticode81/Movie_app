@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore , applyMiddleware} from 'redux';
-
+//import thunk from 'redux-thunk';
 import './index.css';
 import App from './components/App';
 import rootReducer from './reducers'
@@ -17,12 +17,22 @@ import rootReducer from './reducers'
 // }
 // another way of writing middleware
 const logger= ({dispatch,getState})=>(next)=>(action)=>{
-    console.log('ACTION_TYPE=',action.type);
+    //console.log('ACTION_TYPE=',action.type);
       next(action); // calling dispatch() func to send undated action
 }
 
-const store = createStore(rootReducer,applyMiddleware(logger));
-console.log(store);
+const thunk=({dispatch,getState})=>(next)=>(action)=>
+{
+  if(typeof action ==='function')
+  {
+    action(dispatch);
+    return ;
+  }
+
+  next(action);
+}
+//const store = createStore(rootReducer,applyMiddleware(logger));
+//console.log(store);
 // console.log('BeforeState',store.getState());
 
 // //we will use dispatch to send actions and change the state
@@ -32,6 +42,13 @@ console.log(store);
 // })
 // console.log('Afterstate',store.getState());
 
+// const logger=({dispatch,getState})=>(next)=>(action)=>
+// {
+//   if(typeof action !=='function')
+//   console.log(action.type);
+//   next(action);
+// }
+const store=createStore(rootReducer,applyMiddleware(logger,thunk));
 
 ReactDOM.render(
   <React.StrictMode>
